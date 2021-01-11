@@ -195,11 +195,16 @@ class LinkedList
     }
 
     Node<T>* searchIndex(int index){
+        if(index>=0&&index<getLength()){
             Node<T> *current = head;
             while(index--){
                 current = current->next;
             }
             return current;
+
+        }
+        return NULL;
+
         }
     int getLength(){
             Node<T>* curr = head;

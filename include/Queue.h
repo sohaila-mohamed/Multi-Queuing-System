@@ -69,10 +69,10 @@ class Queue
 
 
     void display(){
-        cout<<length<<endl;
+        cout<<"Queue length: "<<length<<endl;
         Node<T>* curr = head;
         while(curr){
-            cout<<*curr->data<<endl;
+            cout<<"Queue->data "<<*curr->data<<endl;
             curr = curr->next;
 
         }

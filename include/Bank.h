@@ -7,7 +7,8 @@ class Bank
 {
     public:
         Bank(int num) {
-            bankTime = 10;
+            cout<<"ctor"<<endl;
+            bankTime = 0;
             while(num--)
                 bankTellers.add(new Queue<Client>());
         }
@@ -22,10 +23,18 @@ class Bank
                     if(PeakClient)
                         if(PeakClient->getArrival() <= bankTime){
                          Client * NextClient;
+                         Node<Queue<Client>>* currentQueue;
                           do{
-                                Queue<Client> *teller = bankTellers.searchIndex(selectQueue())->data;
-                                teller->enQ(clients.deQ());
-                                NextClient=clients.peak();
+                                int sq=selectQueue();
+                                cout<<"Selected Queue= "<<sq<<endl;
+                                currentQueue=bankTellers.searchIndex(selectQueue());
+                                if(currentQueue){
+                                        Queue<Client> *teller = currentQueue->data;
+                                        teller->enQ(clients.deQ());
+                                        NextClient=clients.peak();
+
+                                  }
+
                           }
                           while(NextClient&&PeakClient->getArrival()==NextClient->getArrival());
                         }
@@ -64,23 +73,21 @@ class Bank
            int length=currentTellerQueue->getLength();
            Node<Client> * currentClient= currentTellerQueue->peakNode();
 
-           if(currentClient){
-
                 while(currentClient){
                         Queue<int> *currentClientInterupts=currentClient->data->getInterrupts();
-                    if(*currentClientInterupts->peak()==bankTime){
+                    if(currentClientInterupts->peak()&&*currentClientInterupts->peak()==bankTime){
                         cout<<"Before Interrputs"<<endl;
                         displayAll();
-                        currentTellerQueue->deQ();
                         currentClientInterupts->deQ();
-                        bankTellers.searchIndex(selectQueue())->data->enQ(currentClient->data);
+                        cout<<"selected index update "<<selectQueue()<<endl;
+                        bankTellers.searchIndex(selectQueue())->data->enQ(currentTellerQueue->deQ());
                         cout<<"After Interrputs"<<endl;
                         displayAll();
                     }
 
                     currentClient=currentClient->next;
                 }
-        }
+
         }
 
 
@@ -104,7 +111,7 @@ class Bank
 
     void displayAll(){
         int length = bankTellers.getLength();
-        cout<<length<<endl;
+        cout<<"Length"<<length<<endl;
         while(length--){
             cout<<"Queue num:"<<length<<"  Content"<<endl;
             bankTellers.searchIndex(length)->data->display();

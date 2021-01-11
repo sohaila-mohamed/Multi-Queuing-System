@@ -6,7 +6,7 @@
 class Client
 {
     public:
-        Client(int _arrival,int _expected,Queue<int> _interrupts) {
+        Client(int _arrival,int _expected,Queue<int> * _interrupts) {
             arrivalTime = _arrival;
             expectedDuration = _expected;
             interrupts = _interrupts;
@@ -23,18 +23,18 @@ class Client
         int getDur(){
             return expectedDuration;
         }
-        void setInterrupts(Queue<int> _interrupts){
+        void setInterrupts(Queue<int> *_interrupts){
             interrupts = _interrupts;
         }
 
         Queue<int>* getInterrupts(){
-            return &interrupts;
+            return interrupts;
         }
 
         void displayClient(){
             cout<<"arrival Time "<<arrivalTime;
              cout<<", Expected Duration "<<expectedDuration<<endl;
-             interrupts.display();
+             interrupts->display();
 
         }
 
@@ -60,7 +60,7 @@ class Client
     private:
         int arrivalTime;
         int expectedDuration;
-        Queue<int> interrupts;
+        Queue<int>* interrupts;
 };
 
 #endif // CLIENT_
