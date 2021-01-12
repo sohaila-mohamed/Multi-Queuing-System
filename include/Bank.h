@@ -29,9 +29,9 @@ class Bank
                                 cout<<"Selected Queue= "<<sq<<endl;
                                 currentQueue=bankTellers.searchIndex(selectQueue());
                                 if(currentQueue){
-                                        Queue<Client> *teller = currentQueue->data;
-                                        teller->enQ(clients.deQ());
-                                        NextClient=clients.peak();
+                                    Queue<Client> *teller = currentQueue->data;
+                                    teller->enQ(clients.deQ());
+                                    NextClient=clients.peak();
 
                                   }
 
@@ -43,8 +43,6 @@ class Bank
                         bankTime++;
                 }
 
-
-
     }
 
     void updateExpectedDuration(){
@@ -54,18 +52,17 @@ class Bank
 
                 if(currentClient){
 
-                        int duration=currentClient->getDur();
-                        currentClient->setDur(--duration);
+                    int duration=currentClient->getDur();
+                    currentClient->setDur(--duration);
 
-                        if(!duration) {
-                            currentClient->displayClient();
-                            bankTellers.searchIndex(i)->data->deQ();}
+                    if(!duration) {
+                        currentClient->displayClient();
+                        cout<<"abo 7amada left  "<<"Bank Clock is: "<<bankTime<<endl;
+                        bankTellers.searchIndex(i)->data->deQ()->displayClient();
+                        displayAll();
+                        }
                 }
-
-
         }
-
-
     }
     void queueUpdate(){
         for (int i=0;i<bankTellers.getLength();i++){
@@ -76,12 +73,13 @@ class Bank
                 while(currentClient){
                         Queue<int> *currentClientInterupts=currentClient->data->getInterrupts();
                     if(currentClientInterupts->peak()&&*currentClientInterupts->peak()==bankTime){
-                        cout<<"Before Interrputs"<<endl;
+                        cout<<"Before Interrputs"<<"Bank clock is "<<bankTime<<endl;
                         displayAll();
                         currentClientInterupts->deQ();
+                        Client* dequed = currentTellerQueue->deQ();
                         cout<<"selected index update "<<selectQueue()<<endl;
-                        bankTellers.searchIndex(selectQueue())->data->enQ(currentTellerQueue->deQ());
-                        cout<<"After Interrputs"<<endl;
+                        bankTellers.searchIndex(selectQueue())->data->enQ(dequed);
+                        cout<<"After Interrputs"<<"Bank clock is: "<<bankTime<<endl;
                         displayAll();
                     }
 
