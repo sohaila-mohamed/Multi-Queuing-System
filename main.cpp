@@ -41,24 +41,48 @@ int main()
     cin>>addFlag;
     while(addFlag){
         int arrive, dur;
-        cout<<"enter arrival time "<<endl;
-        cin>>arrive;
-        cout<<"enter expected duration"<<endl;
-        cin>>dur;
+        bool nonNegArr = false,nonNegDur = false;
 
+        while(!nonNegArr){
+            nonNegArr = true;
+            cout<<"enter arrival time "<<endl;
+            cin>>arrive;
+            if(arrive<0){
+                nonNegArr = false;
+                cout<<"arrive should be positive value"<<endl;
+            }
+        }
+        while(!nonNegDur){
+            nonNegDur = true;
+            cout<<"enter expected duration"<<endl;
+            cin>>dur;
+            if(dur<0){
+                nonNegDur = false;
+                cout<<"Duration should be positive"<endl;
+            }
+        }
         int interruptsFlag=0;
         cout<<"1 if he has interrupts 0 if he hasn't"<<endl;
         cin>>interruptsFlag;
-        Queue<int> *interrupts=new Queue<int>();
+        Queue<int> interrupts;
         while(interruptsFlag){
             //memory free
             int* interrupt=new int();
-            cin>>*interrupt;
-            interrupts->enQ(interrupt);
+            bool properInterrupt = false;
+            while(!properInterrupt){
+                cout<<"enter interrupt time: ";
+                cin>>*interrupt;
+                properInterrupt = true;
+                if(*interrupt < arrive){
+                    properInterrupt = false;
+                    cout<<"enterrupts can't happen before client arrives"<<endl;
+                }
+            }
+            interrupts.enQ(interrupt);
             cout<<"1 to add one more interrupt 0 to procceed"<<endl;
             cin>>interruptsFlag;
         }
-        interrupts->bubbleSort();
+        interrupts.bubbleSort();
         clients.enQ(new Client(arrive,dur,interrupts));
         cout<<"1 to add new client 0 submit clients"<<endl;
         cin>>addFlag;
@@ -70,26 +94,11 @@ int main()
     clients.display();
     //Client deleted = clients.deQ();
     //cout<<deleted<<endl;
-//   LinkedList<int>* ll=new LinkedList<int>();
-//   int x=1;
-//   ll->add(&x);
-//   x++;
-//   ll->add(&x);
-//   x++;
-//   ll->add(&x);
-//   x++;
-//   ll->add(&x);
-//   x++;
-//   ll->add(&x);
-//   x++;
-//   ll->add(&x);
-//   x++;
-//   ll->add(&x);
-//   cout<<"ll.length"<<ll->getLength()<<endl;
+
 
     Bank _bank(3);
-   _bank.processBank(clients);
-   _bank.displayAll();
+    _bank.processBank(clients);
+    _bank.displayAll();
 
     return 0;
 }
