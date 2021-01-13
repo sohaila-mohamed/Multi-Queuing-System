@@ -26,7 +26,7 @@ class Bank
                          Node<Queue<Client>>* currentQueue;
                           do{
                                 int sq=selectQueue();
-                                cout<<"Selected Queue= "<<sq<<endl;
+                                //cout<<"Selected Queue= "<<sq<<endl;
                                 currentQueue=bankTellers.searchIndex(selectQueue());
                                 if(currentQueue){
                                     Queue<Client> *teller = currentQueue->data;
@@ -38,9 +38,11 @@ class Bank
                           }
                           while(NextClient&&PeakClient->getArrival()==NextClient->getArrival());
                         }
+                        bankTime++;
                         queueUpdate();
                         updateExpectedDuration();
-                        bankTime++;
+                        BankCamera();
+
                 }
 
     }
@@ -56,10 +58,10 @@ class Bank
                     currentClient->setDur(--duration);
 
                     if(!duration) {
-                        currentClient->displayClient();
-                        cout<<"abo 7amada left  "<<"Bank Clock is: "<<bankTime<<endl;
-                        bankTellers.searchIndex(i)->data->deQ()->displayClient();
-                        displayAll();
+                        //currentClient->displayClient();
+                       // cout<<"abo 7amada left  "<<"Bank Clock is: "<<bankTime<<endl;
+                        bankTellers.searchIndex(i)->data->deQ();
+                        //displayAll();
                         }
                 }
         }
@@ -73,14 +75,12 @@ class Bank
                 while(currentClient){
                         Queue<int> *currentClientInterupts=currentClient->data->getInterrupts();
                     if(currentClientInterupts->peak()&&*currentClientInterupts->peak()==bankTime){
-                        cout<<"Before Interrputs"<<"Bank clock is "<<bankTime<<endl;
-                        displayAll();
+                       // cout<<"Before Interrputs"<<"Bank clock is "<<bankTime<<endl;
                         currentClientInterupts->deQ();
                         Client* dequed = currentTellerQueue->deQ();
-                        cout<<"selected index update "<<selectQueue()<<endl;
+                       // cout<<"selected index update "<<selectQueue()<<endl;
                         bankTellers.searchIndex(selectQueue())->data->enQ(dequed);
-                        cout<<"After Interrputs"<<"Bank clock is: "<<bankTime<<endl;
-                        displayAll();
+                       // cout<<"After Interrputs"<<"Bank clock is: "<<bankTime<<endl;
                     }
 
                     currentClient=currentClient->next;
@@ -115,6 +115,36 @@ class Bank
             bankTellers.searchIndex(length)->data->display();
 
         }
+    }
+
+    int maxLength(){
+        int Max=0;
+         int currentLength;
+         for (int i=0;i<bankTellers.getLength();i++){
+                currentLength= bankTellers.searchIndex(i)->data->getLength();
+                if(currentLength>Max) Max=currentLength;
+         }
+         return Max;
+    }
+
+    void BankCamera(){
+        cout<<bankTime<<"---------------------------------------"<<endl;
+        int MaxLength=maxLength();
+        int tellersLength=bankTellers.getLength();
+        for (int i=0;i<tellersLength;i++){
+            cout<<" |-| ";
+        }
+        cout<<endl;
+
+        for(int j=0;j<MaxLength;j++){
+                 for (int k=0;k<tellersLength;k++){
+                      if( bankTellers.searchIndex(k)->data->searchIndex(j))
+                              cout<<"  * ";
+                 }
+        cout<<endl;
+        }
+       cout<<"---------------------------------------------------"<<endl;
+
     }
 
 
