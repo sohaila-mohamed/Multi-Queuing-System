@@ -5,11 +5,14 @@
 #include"LinkedList.h"
 class Client
 {
+
     public:
         Client(int _arrival,int _expected,Queue<int> * _interrupts) {
             arrivalTime = _arrival;
             expectedDuration = _expected;
             interrupts = _interrupts;
+            id = _id;
+            _id+=1;
         }
         void setArrival(int _arr){
             arrivalTime = _arr;
@@ -55,12 +58,16 @@ class Client
             }
         }
 
-    protected:
+    char getId(){
+        return id;
+    }
 
     private:
         int arrivalTime;
         int expectedDuration;
+        char id;
         Queue<int>* interrupts;
+        static char _id;
 };
-
+char Client::_id = 65;
 #endif // CLIENT_

@@ -35,6 +35,20 @@ int main()
     de?cout<<"deque: "<<de<<endl:cout<<"queue is empty"<<endl;
     cout<<"peak: "<<obj.peak()<<endl;
     obj.display();*/
+    int NoT;
+    bool validNoT = false;
+
+    while(!validNoT){
+        cout<<"Enter number of Tellers: ";
+        cin>>NoT;
+        validNoT = true;
+        if(NoT<=0){
+           validNoT = false;
+           cout<<"# of tellers must be positive"<<endl;
+        }
+
+    }
+
     Queue<Client> clients;
     int addFlag = 0;
     cout<<"enter 1 to add new client 0 submit clients"<<endl;
@@ -96,7 +110,7 @@ int main()
     //cout<<deleted<<endl;
 
 
-    Bank _bank(3);
+    Bank _bank(NoT);
     _bank.processBank(clients);
     _bank.displayAll();
 

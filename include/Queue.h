@@ -82,6 +82,10 @@ class Queue
         return head;
     }
 
+    Node<T>* getTail(){
+        return tail;
+    }
+
     int getLength(){
         return length;
     }
@@ -126,6 +130,46 @@ class Queue
         return NULL;
 
         }
+    void DeleteByIndex(int index)
+    {
+        if(head){
+            Node<T>* pDelete = searchIndex(index);
+            deleteNode(pDelete->data);
+        }
+    }
+    Node<T>* searchNode(T *_data){
+            Node<T> *current = head;
+            while(current){
+                if(current->data == _data)
+                    return current;
+                current = current->next;
+            }
+            return NULL;
+        }
+
+    void deleteNode(T *_data){
+        Node<T> *pDelete = searchNode(_data);
+        if(!pDelete)
+            return;
+        if(pDelete == head){
+            if(pDelete == tail)
+                head = tail = NULL;
+        else{
+            head = head->next;
+            head->prev = NULL;
+            }
+        }
+        else if(pDelete == tail){
+            tail = tail->prev;
+            tail->next = NULL;
+        }
+        else{
+            pDelete->prev->next = pDelete->next;
+            pDelete->next->prev = pDelete->prev;
+        }
+        length--;
+        delete pDelete;
+    }
 
 
 };
