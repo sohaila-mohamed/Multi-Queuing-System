@@ -13,6 +13,7 @@ class Client
             interrupts = _interrupts;
             id = _id;
             _id+=1;
+            waitingTime = 0;
         }
         void setArrival(int _arr){
             arrivalTime = _arr;
@@ -41,15 +42,17 @@ class Client
 
         }
 
-        static void sortClients(Queue<Client> clients){
-            Node<Client> *curr = clients.getHead();
+        static void sortClients(Queue<Client> *clients){
+            Node<Client> *curr = clients->getHead();
             bool sorted = 0;
             while(curr&&!sorted){
                 sorted = 1;
                 Node<Client> *curr2 = curr->next;
                 while(curr2){
-                    if(curr2->data->getArrival() < curr->data->getArrival()){
-                        swap(curr2->data,curr->data);
+                    if(curr2->data->getArrival() <= curr->data->getArrival()){
+                        Client* temp = curr2->data;
+                        curr2->data = curr->data;
+                        curr->data = temp;
                         sorted = 0;
                         }
                     curr2 = curr2->next;
@@ -61,10 +64,17 @@ class Client
     char getId(){
         return id;
     }
+    void setWaitingTime(int _waitingTime){
+        waitingTime = _waitingTime;
+    }
+    int getWaitingTime(){
+        return waitingTime;
+    }
 
     private:
         int arrivalTime;
         int expectedDuration;
+        int waitingTime;
         char id;
         Queue<int>* interrupts;
         static char _id;

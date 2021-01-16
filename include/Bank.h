@@ -8,17 +8,15 @@ class Bank
     public:
         Bank(int num) {
             cout<<"ctor"<<endl;
+            totalWait = 0;
             bankTime = 0;
             while(num--)
                 bankTellers.add(new Queue<Client>());
         }
     void processBank(Queue<Client> clients){
-              //new processBank
-                //int length = clients.getLength();
                 int time = 50;
-                //int closingTime = clients.getTail()->data->getArrival()+clients.getTail()->data->getDur();
+                int count = 0;
                 while(time--){
-
                     //bankTellers.searchIndex(selectQueue())->data->enQ(clients.deQ());    This line works properly
                     Client * PeakClient=clients.peak();
                     if(PeakClient)
@@ -36,39 +34,46 @@ class Bank
                                     cout<<"Client "<< arrived->getId()<<" reached bank at teller number num: "<<sq <<endl;
                                     BankCamera();
                                     NextClient=clients.peak();
+                                    count++;
                                 }
-
                           }
                           while(NextClient&&PeakClient->getArrival()==NextClient->getArrival());
                         }
                         bankTime++;
+                        updateWaitingTime();
                         updateExpectedDuration();
                         queueUpdate();
-
-                        //BankCamera();
-
                 }
-
+                stuckInqueuWaitingTime();
+                cout<<"average Waiting Time: "<<(double)totalWait /(double)count<<endl;
     }
-
+    void updateWaitingTime(){
+        Node<Queue<Client>> *_teller = bankTellers.getHead();
+        while(_teller){
+            Node<Client> *_client= _teller->data->getHead();
+            while(_client){
+                if(_client ->data != _teller->data->peak()){
+                    int waitingTime = _client->data->getWaitingTime();
+                    _client->data->setWaitingTime(++waitingTime);
+                    }
+                _client = _client ->next;
+            }
+            _teller = _teller->next;
+        }
+    }
+    // searchIndex performance issue
     void updateExpectedDuration(){
         for (int i=0;i<bankTellers.getLength();i++){
 
                 Client * currentClient=bankTellers.searchIndex(i)->data->peak();
-
                 if(currentClient){
-
                     int duration=currentClient->getDur();
                     currentClient->setDur(--duration);
-
-                    if(!duration) {
-                        //currentClient->displayClient();
-                       // cout<<"abo 7amada left  "<<"Bank Clock is: "<<bankTime<<endl;
-
+                    if(!duration){
                         bankTellers.searchIndex(i)->data->deQ();
-                        cout<<"Client"<< currentClient->getId()<< " at teller number "<<i<<" left"<<endl;
+                        totalWait+=currentClient->getWaitingTime();
+                        cout<<"Client: "<< currentClient->getId()<< " at teller number "<<i<<" left with waiting time: "<<currentClient->getWaitingTime()<<endl;
                         BankCamera();
-                        //displayAll();
                         }
                 }
         }
@@ -86,30 +91,20 @@ class Bank
                         currentClientInterupts->deQ();
                         Client* dequed = currentClient->data;
                         currentTellerQueue->deleteNode(currentClient->data);
-                        cout<<"the "<< currentClient->data->getId()<<" Client at teller Num: "<<i<<" interrupted"<<endl;
+                        cout<<"the "<< dequed->getId()<<" Client at teller Num: "<<i<<" interrupted"<<endl;
                         BankCamera();
                         int backIndex = selectQueue();
                         bankTellers.searchIndex(backIndex)->data->enQ(dequed);
                         cout<<"the "<< currentClient->data->getId()<<" Client"<<" got back at teller Num: "<<backIndex<<endl;
                         BankCamera();
+                        //delete dequed;
                     }
                     currentClient=currentClient->next;
                     count++;
                 }
         }
     }
-    int selectQueue(){
-        int queueNum;
-        int clientsRemaining = INT_MAX;
-        int length = bankTellers.getLength();
-        for(int i = 0 ;i < length ; i++){
-            if(bankTellers.searchIndex(i)->data->getLength() < clientsRemaining){
-                queueNum = i;
-                clientsRemaining = bankTellers.searchIndex(i)->data->getLength();
-            }
-        }
-        return queueNum;
-    }
+
 
 
     void displayAll(){
@@ -133,7 +128,7 @@ class Bank
     }
 
     void BankCamera(){
-        cout<<bankTime<<"---------------------------------------"<<endl;
+        cout<<"BankClock: "<<bankTime<<"---------------------------------------"<<endl;
         int MaxLength=maxLength();
         int tellersLength=bankTellers.getLength();
         for (int i=0;i<tellersLength;i++){
@@ -154,10 +149,36 @@ class Bank
 
     }
 
+    void stuckInqueuWaitingTime(){
+        Node<Queue<Client>> *_teller = bankTellers.getHead();
+        while(_teller){
+            Node<Client> *_client = _teller->data->getHead();
+            while(_client){
+                totalWait += _client->data->getWaitingTime();
+                _client = _client->next;
+            }
+            _teller = _teller->next;
+        }
+    }
 
     private:
         LinkedList<Queue<Client>> bankTellers;
         int bankTime;
+        int totalWait;
+
+
+        int selectQueue(){
+            int queueNum;
+            int clientsRemaining = INT_MAX;
+            int length = bankTellers.getLength();
+            for(int i = 0 ;i < length ; i++){
+                if(bankTellers.searchIndex(i)->data->getLength() < clientsRemaining){
+                    queueNum = i;
+                    clientsRemaining = bankTellers.searchIndex(i)->data->getLength();
+                }
+            }
+            return queueNum;
+        }
 };
 
 #endif // BANK_H

@@ -102,10 +102,10 @@ int main()
         cin>>addFlag;
     }
 
-   // clients.display();
+   clients.display();
 
-    Client::sortClients(clients);
-   // clients.display();
+    Client::sortClients(&clients);
+   clients.display();
     //Client deleted = clients.deQ();
     //cout<<deleted<<endl;
 
