@@ -21,6 +21,15 @@ class LinkedList
         LinkedList(){
             head = tail = NULL;
         }
+        ~LinkedList(){
+
+             Node<T>* temp=head;
+             while(temp){
+                    cout<<"Linked List Destructor"<<endl;
+                    deleteNode(temp->data);
+                    temp=head;
+             }
+        }
     void add(T *_data){
         Node<T> *newNode = new Node<T>(_data);
         if(head == NULL){

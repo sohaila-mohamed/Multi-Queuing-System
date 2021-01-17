@@ -11,8 +11,6 @@ class Client
             arrivalTime = _arrival;
             expectedDuration = _expected;
             interrupts = _interrupts;
-            id = _id;
-            _id+=1;
             waitingTime = 0;
         }
         void setArrival(int _arr){
@@ -64,6 +62,7 @@ class Client
     char getId(){
         return id;
     }
+    char setId(char _id){id=_id;}
     void setWaitingTime(int _waitingTime){
         waitingTime = _waitingTime;
     }
@@ -77,7 +76,7 @@ class Client
         int waitingTime;
         char id;
         Queue<int>* interrupts;
-        static char _id;
+
 };
-char Client::_id = 65;
+
 #endif // CLIENT_

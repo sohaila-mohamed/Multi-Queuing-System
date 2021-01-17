@@ -5,7 +5,8 @@
 #include"Client.h"
 class Bank
 {
-    public:
+
+public:
         Bank(int num) {
             cout<<"ctor"<<endl;
             totalWait = 0;
@@ -13,6 +14,7 @@ class Bank
             while(num--)
                 bankTellers.add(new Queue<Client>());
         }
+
     void processBank(Queue<Client> clients){
                 int time = 50;
                 int count = 0;
@@ -30,6 +32,7 @@ class Bank
                                 if(currentQueue){
                                     Queue<Client> *teller = currentQueue->data;
                                     Client* arrived = clients.deQ();
+                                    setClientId(arrived);
                                     teller->enQ(arrived);
                                     cout<<"Client "<< arrived->getId()<<" reached bank at teller number num: "<<sq <<endl;
                                     BankCamera();
@@ -165,6 +168,7 @@ class Bank
         LinkedList<Queue<Client>> bankTellers;
         int bankTime;
         int totalWait;
+        static char ClientId;
 
 
         int selectQueue(){
@@ -179,8 +183,14 @@ class Bank
             }
             return queueNum;
         }
-};
 
+      void setClientId (Client * client){
+          client->setId(ClientId);
+          ClientId++;
+      }
+
+};
+char Bank::ClientId = 65;
 #endif // BANK_H
 
 
