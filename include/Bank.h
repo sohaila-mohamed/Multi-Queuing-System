@@ -15,8 +15,8 @@ public:
                 bankTellers.add(new Queue<Client>());
         }
 
-    void processBank(Queue<Client> clients){
-                int time = 50;
+    void processBank(Queue<Client> clients,int closingTime ){
+                int time = closingTime;
                 int count = 0;
                 while(time--){
                     //bankTellers.searchIndex(selectQueue())->data->enQ(clients.deQ());    This line works properly

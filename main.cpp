@@ -18,10 +18,18 @@ ostream & operator << (ostream &out,  Client &c)
     return out;
 }
 
+ bool validateInputs(int val){
+         bool validNoT = true;
+        if(val<=0){
+           validNoT = false;
+        }
+        return validNoT;
 
+    }
 
 int main()
 {
+
     /*Queue<int> obj;
     int x = 5,y = 6, z = 7,a = 100,b = 8,c = 10;
     obj.enQ(&x);obj.enQ(&y);obj.enQ(&z);obj.enQ(&a);obj.enQ(&b);obj.enQ(&c);
@@ -35,19 +43,22 @@ int main()
     de?cout<<"deque: "<<de<<endl:cout<<"queue is empty"<<endl;
     cout<<"peak: "<<obj.peak()<<endl;
     obj.display();*/
-    int NoT;
-    bool validNoT = false;
+     int NoT=0;
+    int BankCloseTime=0;
 
-    while(!validNoT){
-        cout<<"Enter number of Tellers: ";
+    do{
+
+        cout<<"Enter number of Tellers *Note(Should be positive): ";
         cin>>NoT;
-        validNoT = true;
-        if(NoT<=0){
-           validNoT = false;
-           cout<<"# of tellers must be positive"<<endl;
-        }
-
     }
+    while(!validateInputs(NoT));
+    do{
+        cout<<"Enter Bank Closing Time *Note(Should be positive)";
+        cin>>BankCloseTime;
+    }
+     while(!validateInputs(BankCloseTime));
+
+
 
     Queue<Client> clients;
     int addFlag = 0;
@@ -111,7 +122,7 @@ int main()
 
 
     Bank _bank(NoT);
-    _bank.processBank(clients);
+    _bank.processBank(clients,BankCloseTime);
     _bank.displayAll();
 
     return 0;
