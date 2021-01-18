@@ -12,6 +12,9 @@ ostream & operator << (ostream &out,  Client &c)
     out<<' ';
     out<<"Expected duration: ";
     out << c.getDur();
+    out<<" ";
+    out<<"Waiting Time: ";
+    out<<c.getWaitingTime();
 
     out << endl;
 
@@ -53,7 +56,7 @@ int main()
     }
     while(!validateInputs(NoT));
     do{
-        cout<<"Enter Bank Closing Time *Note(Should be positive)";
+        cout<<"Enter Bank Closing Time *Note(Should be positive): ";
         cin>>BankCloseTime;
     }
      while(!validateInputs(BankCloseTime));
@@ -81,7 +84,7 @@ int main()
             nonNegDur = true;
             cout<<"enter expected duration"<<endl;
             cin>>dur;
-            if(dur<0){
+            if(dur<=0){
                 nonNegDur = false;
                 cout<<"Duration should be positive"<<endl;
             }

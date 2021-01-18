@@ -63,9 +63,13 @@ class Client
         return id;
     }
     char setId(char _id){id=_id;}
+
+
     void setWaitingTime(int _waitingTime){
         waitingTime = _waitingTime;
     }
+
+
     int getWaitingTime(){
         return waitingTime;
     }
