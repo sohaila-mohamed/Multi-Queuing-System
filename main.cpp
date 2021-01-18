@@ -7,6 +7,9 @@
 using namespace std;
 ostream & operator << (ostream &out,  Client &c)
 {
+    out<<"ID: ";
+    out<<c.getId();
+    out<<' ';
     out<<"Arrival: ";
     out << c.getArrival();
     out<<' ';
